@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { Upload, ImageIcon, Download, Loader2 } from "lucide-react";
@@ -14,12 +14,29 @@ export default function Home() {
   const [downloadUrl, setDownloadUrl] = useState("");
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    // Sayfa yenilendiğinde localStorage'dan resmi kontrol et
+    const savedImage = localStorage.getItem("uploadedImage");
+    if (savedImage) {
+      setImage(savedImage);
+    }
+
+    const savedProcessedImage = localStorage.getItem("processedImage");
+    if (savedProcessedImage) {
+      setProcessedImage(savedProcessedImage);
+    }
+  }, []);
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedFile(file);
       const reader = new FileReader();
-      reader.onload = (e) => setImage(e.target?.result as string);
+      reader.onload = (e) => {
+        const imageUrl = e.target?.result as string;
+        setImage(imageUrl);
+        localStorage.setItem("uploadedImage", imageUrl); // Resmi localStorage'a kaydet
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -36,7 +53,7 @@ export default function Home() {
     try {
       const response = await axios.post("https://api.remove.bg/v1.0/removebg", formData, {
         headers: {
-          "X-Api-Key": "3Yg7WEdzqzNRZwQi9VDWiybs",
+          "X-Api-Key": process.env.NEXT_PUBLIC_REMOVE_BG_API_KEY, // API anahtarını buradan alıyoruz
           "Content-Type": "multipart/form-data",
         },
         responseType: "blob",
@@ -45,6 +62,7 @@ export default function Home() {
       const imageURL = URL.createObjectURL(response.data);
       setProcessedImage(imageURL);
       setDownloadUrl(imageURL);
+      localStorage.setItem("processedImage", imageURL); // İşlenmiş görseli localStorage'a kaydet
     } catch (error) {
       console.error("Hata:", error);
       alert("Arka plan kaldırılırken bir hata oluştu.");
