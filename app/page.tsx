@@ -37,7 +37,7 @@ export default function Home() {
     try {
       const response = await axios.post("https://api.remove.bg/v1.0/removebg", formData, {
         headers: {
-          "X-Api-Key": process.env.BACKGROUND_KEY || "",
+          "X-Api-Key": "3Yg7WEdzqzNRZwQi9VDWiybs",
           "Content-Type": "multipart/form-data",
         },
         responseType: "blob",
