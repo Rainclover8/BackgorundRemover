@@ -1,5 +1,4 @@
 "use client";
-import type React from "react";
 import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
@@ -13,7 +12,7 @@ export default function Home() {
   const [processedImage, setProcessedImage] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [downloadUrl, setDownloadUrl] = useState("");
-  const [loading, setLoading] = useState(false); // Yeni loader durumu
+  const [loading, setLoading] = useState(false);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -28,7 +27,7 @@ export default function Home() {
   const removeBackground = async () => {
     if (!selectedFile) return alert("Lütfen bir resim yükleyin!");
 
-    setLoading(true); // Loader'ı başlat
+    setLoading(true);
 
     const formData = new FormData();
     formData.append("image_file", selectedFile);
@@ -50,7 +49,7 @@ export default function Home() {
       console.error("Hata:", error);
       alert("Arka plan kaldırılırken bir hata oluştu.");
     } finally {
-      setLoading(false); // İşlem bittiğinde loader'ı kapat
+      setLoading(false);
     }
   };
 
@@ -100,7 +99,7 @@ export default function Home() {
 
           {image && (
             <Button onClick={removeBackground} className="mb-8 text-black" disabled={loading}>
-              {loading ? <Loader  /> : <ImageIcon className="mr-2 h-4 w-4 text-black" />}
+              {loading ? <Loader /> : <ImageIcon className="mr-2 h-4 w-4 text-black" />}
               {loading ? "İşleniyor..." : "Arka Planı Kaldır"}
             </Button>
           )}
@@ -112,7 +111,7 @@ export default function Home() {
                 <Image src={processedImage} alt="Processed image" layout="fill" objectFit="contain" />
               </div>
               <Button onClick={handleDownload} className="mt-4 text-black">
-                <Download className="mr-2 h-4 w-4 " /> İndir
+                <Download className="mr-2 h-4 w-4" /> İndir
               </Button>
             </div>
           )}
