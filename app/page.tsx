@@ -7,6 +7,7 @@ import { Button } from "./components/ui/button";
 import Loader from "./components/ui/loader";
 import axios from "axios";
 
+// GITHUB HATASI
 export default function Home() {
   const [image, setImage] = useState<string | null>(null);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
@@ -15,7 +16,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Sayfa yenilendiğinde localStorage'dan resmi kontrol et
     const savedImage = localStorage.getItem("uploadedImage");
     if (savedImage) {
       setImage(savedImage);
